@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Function to check if a string is a binary palindrome
+bool isBinaryPalindrome(const char* str) {
+    int len = strlen(str);
+
+    for (int i = 0; i < len / 2; i++) {
+        if (str[i] != str[len - 1 - i]) {
+            return false;
+        }
+        // Optional: you could also check for only '0' and '1'
+        if (str[i] != '0' && str[i] != '1') {
+            return false;
+        }
+    }
+
+    // Also check the middle character if odd length
+    if (len % 2 == 1 && (str[len / 2] != '0' && str[len / 2] != '1')) {
+        return false;
+    }
+
+    return true;
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a binary string: ");
+    scanf("%s", input);
+
+    if (isBinaryPalindrome(input)) {
+        printf("Accepted: The string belongs to the language.\n");
+    } else {
+        printf("Rejected: The string does not belong to the language.\n");
+    }
+
+    return 0;
+}
