@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Function to check if string contains only 0s and 1s
+bool isBinaryString(const char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] != '0' && str[i] != '1') {
+            return false;
+        }
+    }
+    return true;
+}
+
+// NFA simulation: string must start with '0' and end with '1'
+bool simulateNFA(const char *str) {
+    int len = strlen(str);
+
+    if (len < 2) return false;
+
+    return str[0] == '0' && str[len - 1] == '1';
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a binary string (only 0s and 1s): ");
+    scanf("%s", input);
+
+    if (!isBinaryString(input)) {
+        printf("Rejected: Input contains invalid characters.\n");
+        return 0;
+    }
+
+    if (simulateNFA(input)) {
+        printf("Accepted: String starts with 0 and ends with 1.\n");
+    } else {
+        printf("Rejected: String does not match the pattern.\n");
+    }
+
+    return 0;
+}
