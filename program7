@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Function to count occurrences of "101"
+int count101(const char* str) {
+    int count = 0;
+    int len = strlen(str);
+    for (int i = 0; i < len - 2; i++) {
+        if (str[i] == '1' && str[i + 1] == '0' && str[i + 2] == '1') {
+            count++;
+        }
+    }
+    return count;
+}
+
+// Function to check if string contains only 0s and 1s
+bool isBinaryString(const char* str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] != '0' && str[i] != '1') {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a binary string: ");
+    scanf("%s", input);
+
+    if (!isBinaryString(input)) {
+        printf("Rejected: Invalid character found. Only 0s and 1s are allowed.\n");
+        return 0;
+    }
+
+    if (count101(input) == 1) {
+        printf("Accepted: String belongs to the language.\n");
+    } else {
+        printf("Rejected: String does not belong to the language.\n");
+    }
+
+    return 0;
+}
