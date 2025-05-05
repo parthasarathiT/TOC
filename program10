@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_STATES 10
+
+int epsilonTransitions[MAX_STATES][MAX_STATES]; // Adjacency matrix for ε-transitions
+int numStates;
+
+bool visited[MAX_STATES];
+
+// DFS to find ε-closure
+void epsilonClosureDFS(int state, int closure[], int *closureSize) {
+    if (visited[state]) return;
+
+    visited[state] = true;
+    closure[(*closureSize)++] = state;
+
+    for (int i = 0; i < numStates; i++) {
+        if (epsilonTransitions[state][i]) {
+            epsilonClosureDFS(i, closure, closureSize);
+        }
+    }
+}
+
+void findEpsilonClosures() {
+    printf("\nEpsilon closures:\n");
+
+    for (int state = 0; state < numStates; state++) {
+        for (int i = 0; i < numStates; i++) visited[i] = false;
+
+        int closure[MAX_STATES];
+        int closureSize = 0;
+
+        epsilonClosureDFS(state, closure, &closureSize);
+
+        printf("ε-closure(q%d): { ", state);
+        for (int i = 0; i < closureSize; i++) {
+            printf("q%d ", closure[i]);
+        }
+        printf("}\n");
+    }
+}
+
+int main() {
+    int numEpsilonTransitions;
+
+    printf("Enter number of states in the NFA: ");
+    scanf("%d", &numStates);
+
+    // Initialize transition matrix
+    for (int i = 0; i < numStates; i++)
+        for (int j = 0; j < numStates; j++)
+            epsilonTransitions[i][j] = 0;
+
+    printf("Enter number of ε-transitions: ");
+    scanf("%d", &numEpsilonTransitions);
+
+    printf("Enter ε-transitions in the form: from_state to_state\n");
+    for (int i = 0; i < numEpsilonTransitions; i++) {
+        int from, to;
+        scanf("%d %d", &from, &to);
+        epsilonTransitions[from][to] = 1;
+    }
+
+    findEpsilonClosures();
+
+    return 0;
+}
