@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Function to check if the substring is all 1s
+bool isAllOnes(const char *str, int start, int end) {
+    for (int i = start; i <= end; i++) {
+        if (str[i] != '1') return false;
+    }
+    return true;
+}
+
+// Recursive function to simulate S → 0S0 | A, A → 1A | ε
+bool isValidCFG(const char *str, int start, int end) {
+    // Base case: empty string is valid (A → ε)
+    if (start > end) {
+        return true;
+    }
+
+    // Try to match S → 0 S 0
+    if (str[start] == '0' && str[end] == '0') {
+        return isValidCFG(str, start + 1, end - 1);
+    }
+
+    // Otherwise, check if the substring is all 1s (A → 1A | ε)
+    return isAllOnes(str, start, end);
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a binary string: ");
+    scanf("%s", input);
+
+    int len = strlen(input);
+
+    // Check for invalid characters
+    for (int i = 0; i < len; i++) {
+        if (input[i] != '0' && input[i] != '1') {
+            printf("Rejected: Invalid character '%c'\n", input[i]);
+            return 0;
+        }
+    }
+
+    if (isValidCFG(input, 0, len - 1)) {
+        printf("Accepted: String belongs to the language.\n");
+    } else {
+        printf("Rejected: String does not belong to the language.\n");
+    }
+
+    return 0;
+}
